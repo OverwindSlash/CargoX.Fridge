@@ -1,22 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Abp.Runtime.Caching;
 using Amazon.Runtime;
 using Amazon.S3.Model;
 using CargoX.Fridge.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CargoX.Fridge.Storage
 {
     public class S3StorageAppService : IS3StorageAppService
     {
         private readonly IS3ObjectRepository _s3Repository;
+        private readonly ICacheManager _cacheManager;
 
 
-        public S3StorageAppService(IS3ObjectRepository s3Repository)
+        public S3StorageAppService(
+            IS3ObjectRepository s3Repository, 
+            ICacheManager cacheManager)
         {
             _s3Repository = s3Repository;
+            _cacheManager = cacheManager;
         }
 
         [HttpGet]
