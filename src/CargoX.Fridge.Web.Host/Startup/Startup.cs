@@ -16,6 +16,7 @@ using CargoX.Fridge.Identity;
 using Abp.AspNetCore.SignalR.Hubs;
 using Abp.Dependency;
 using Abp.Json;
+using CargoX.Fridge.Web.Host.SvcDiscovery;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
 
@@ -48,8 +49,6 @@ namespace CargoX.Fridge.Web.Host.Startup
                 };
             });
 
-
-
             IdentityRegistrar.Register(services);
             AuthConfigurer.Configure(services, _appConfiguration);
 
@@ -72,6 +71,9 @@ namespace CargoX.Fridge.Web.Host.Startup
                         .AllowCredentials()
                 )
             );
+
+            // Add service discovery
+            services.AddSvcDiscovery(_appConfiguration, "nacos");
 
             // Swagger - Enable this line and the related lines in Configure method to enable swagger UI
             services.AddSwaggerGen(options =>
@@ -112,7 +114,9 @@ namespace CargoX.Fridge.Web.Host.Startup
 
             app.UseAbpRequestLocalization();
 
-          
+            // Use service discovery
+            app.UseSvcDiscovery(_appConfiguration, "nacos");
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHub<AbpCommonHub>("/signalr");
