@@ -12,6 +12,7 @@ using Abp.Zero.Configuration;
 using CargoX.Fridge.Authentication.JwtBearer;
 using CargoX.Fridge.Configuration;
 using CargoX.Fridge.EntityFrameworkCore;
+using CargoX.Fridge.S3;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 
 namespace CargoX.Fridge
@@ -19,6 +20,7 @@ namespace CargoX.Fridge
     [DependsOn(
          typeof(FridgeApplicationModule),
          typeof(FridgeEntityFrameworkModule),
+         typeof(FridgeS3Module),
          typeof(AbpAspNetCoreModule)
         ,typeof(AbpAspNetCoreSignalRModule)
      )]

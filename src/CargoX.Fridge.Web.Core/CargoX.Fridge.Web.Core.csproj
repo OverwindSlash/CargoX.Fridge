@@ -20,6 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CargoX.Fridge.Application\CargoX.Fridge.Application.csproj" />
     <ProjectReference Include="..\CargoX.Fridge.EntityFrameworkCore\CargoX.Fridge.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\CargoX.Fridge.S3\CargoX.Fridge.S3.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.2" />
