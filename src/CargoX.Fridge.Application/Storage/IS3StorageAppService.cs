@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using Abp.Application.Services;
+﻿using Abp.Application.Services;
 using Amazon.Runtime;
 using Amazon.S3.Model;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CargoX.Fridge.Storage
 {

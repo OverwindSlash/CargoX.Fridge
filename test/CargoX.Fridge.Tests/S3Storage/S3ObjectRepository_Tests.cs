@@ -1,14 +1,14 @@
-﻿using Amazon.S3;
-using Amazon.S3.Model;
-using CargoX.Fridge.Repositories;
-using Shouldly;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using Amazon.S3;
+using Amazon.S3.Model;
+using CargoX.Fridge.Repositories;
+using Shouldly;
 using Xunit;
 
-namespace CargoX.Fridge.Tests.S3Repository
+namespace CargoX.Fridge.Tests.S3Storage
 {
     public class S3ObjectRepository_Tests : FridgeTestBase
     {

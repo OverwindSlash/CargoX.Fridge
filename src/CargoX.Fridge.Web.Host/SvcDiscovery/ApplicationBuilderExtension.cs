@@ -9,16 +9,11 @@ namespace CargoX.Fridge.Web.Host.SvcDiscovery
         public static IApplicationBuilder UseSvcDiscovery(
             this IApplicationBuilder app,
             IConfigurationRoot configuration,
-            string svcDiscoveryName
-        )
+            string svcDiscoveryName)
         {
             //var lifetime = app.ApplicationServices.GetService(typeof(IHostApplicationLifetime));
             //var config = configuration;
             app.UseNacosAspNetCore();
-
-            var hostname = Dns.GetHostName();
-
-            IPHostEntry ipHost = Dns.GetHostEntry(hostname);
 
             return app;
         }

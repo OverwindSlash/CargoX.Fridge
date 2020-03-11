@@ -62,7 +62,11 @@ namespace CargoX.Fridge.Storage
         [HttpGet]
         public async Task<byte[]> GetObjectWithBytesAsync(string bucketName, string objectKey)
         {
-            return await _s3Repository.GetObjectWithBytesAsync(bucketName, objectKey);
+            ICache cache = _cacheManager.GetCache("S3Cache");
+
+            string cacheKey = $"{bucketName}:{objectKey}";
+            return await cache.GetAsync<string, byte[]>(cacheKey,
+                async () => { return await _s3Repository.GetObjectWithBytesAsync(bucketName, objectKey); });
         }
 
         [HttpGet]

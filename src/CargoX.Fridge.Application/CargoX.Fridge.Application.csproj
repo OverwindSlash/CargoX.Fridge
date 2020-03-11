@@ -11,6 +11,9 @@
     <RootNamespace>CargoX.Fridge</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Abp.RedisCache" Version="5.3.0" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\CargoX.Fridge.Core\CargoX.Fridge.Core.csproj" />
   </ItemGroup>
 </Project>
