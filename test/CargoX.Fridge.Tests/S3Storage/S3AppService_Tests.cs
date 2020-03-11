@@ -43,15 +43,15 @@ namespace CargoX.Fridge.Tests.S3Storage
             await _s3AppService.PurgeBucketAsync(bucketName);
         }
 
-        [Fact]
-        public async Task TestGetObjectWithBytesAsyncUsingMinIO()
-        {
-            string bucketName = "2020-03-06";
-            string objectKey = "7758A8E40D9951DA8C32376B25B01041";
+        //[Fact]
+        //public async Task TestGetObjectWithBytesAsyncUsingMinIO()
+        //{
+        //    string bucketName = "2020-03-06";
+        //    string objectKey = "7758A8E40D9951DA8C32376B25B01041";
 
-            // Test
-            byte[] bytes = await _s3AppService.GetObjectWithBytesAsync(bucketName, objectKey);
-            bytes.Length.ShouldBeGreaterThan(0);
-        }
+        //    // Test
+        //    byte[] bytes = await _s3AppService.GetObjectWithBytesAsync(bucketName, objectKey);
+        //    bytes.Length.ShouldBeGreaterThan(0);
+        //}
     }
 }

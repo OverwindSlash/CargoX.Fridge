@@ -11,6 +11,11 @@
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="..\..\src\CargoX.Fridge.Web.Host\appsettings.json" Link="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\src\CargoX.Fridge.Application\CargoX.Fridge.Application.csproj" />
     <ProjectReference Include="..\..\src\CargoX.Fridge.EntityFrameworkCore\CargoX.Fridge.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\..\src\CargoX.Fridge.S3\CargoX.Fridge.S3.csproj" />
@@ -30,9 +35,6 @@
     <PackageReference Include="Castle.Core" Version="4.4.0" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="appsettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="Images\Image.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
