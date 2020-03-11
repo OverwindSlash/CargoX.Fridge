@@ -81,6 +81,7 @@ namespace CargoX.Fridge.Storage
             return await _s3Repository.ListObjectsAsync(bucketName, startKey, maxKeys);
         }
 
+        [HttpDelete]
         public async Task PurgeBucketAsync(string bucketName)
         {
             await _s3Repository.PurgeBucketAsync(bucketName);
