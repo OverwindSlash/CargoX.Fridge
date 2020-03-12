@@ -1,9 +1,8 @@
-﻿using System;
-using System.Net;
-using Consul;
+﻿using Consul;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace CargoX.Fridge.Web.Host.SvcDiscovery
 {
@@ -14,27 +13,48 @@ namespace CargoX.Fridge.Web.Host.SvcDiscovery
             IConfigurationRoot configuration,
             string svcDiscoveryName)
         {
-            //var lifetime = app.ApplicationServices.GetService(typeof(IHostApplicationLifetime));
-            //var config = configuration;
-            app.UseNacosAspNetCore();
+            if (svcDiscoveryName.ToLower() == "nacos")
+            {
+                app.UseNacosAspNetCore();
+            }
+
+            if (svcDiscoveryName.ToLower() == "consul")
+            {
+                Uri endPoint = new Uri(configuration["App:ServerRootAddress"]);
+
+                ServiceEntity se = new ServiceEntity()
+                {
+                    ServiceIP = endPoint.Host,
+                    ServicePort = endPoint.Port,
+                    ServiceName = configuration["SvcDisco:ServiceName"],
+                    DiscoveryIP = configuration["SvcDisco:DiscoveryIp"],
+                    DiscoveryPort = Int32.Parse(configuration["SvcDisco:DiscoveryPort"]),
+                    TimeOut = Int32.Parse(configuration["SvcDisco:TimeOut"]),
+                    Interval = Int32.Parse(configuration["SvcDisco:Interval"])
+                };
+
+                app.RegisterConsul(se);
+            }
 
             return app;
         }
 
         public static IApplicationBuilder RegisterConsul(
             this IApplicationBuilder app,
-            IHostApplicationLifetime lifetime,
             ServiceEntity serviceEntity)
         {
+            IHostApplicationLifetime lifetime = 
+                app.ApplicationServices.GetService(typeof(IHostApplicationLifetime)) as IHostApplicationLifetime;
+
             var consulClient = new ConsulClient(x =>
                 x.Address = new Uri($@"http://{serviceEntity.DiscoveryIP}:{serviceEntity.DiscoveryPort}"));
 
             var httpCheck = new AgentServiceCheck()
             {
-                DeregisterCriticalServiceAfter = TimeSpan.FromSeconds(5),
-                Interval = TimeSpan.FromSeconds(10),
-                HTTP = $"http://{serviceEntity.ServiceName}:{serviceEntity.ServicePort}/api/health",
-                Timeout = TimeSpan.FromSeconds(5)
+                DeregisterCriticalServiceAfter = TimeSpan.FromSeconds(serviceEntity.TimeOut),
+                Interval = TimeSpan.FromSeconds(serviceEntity.Interval),
+                HTTP = $"http://{serviceEntity.ServiceIP}:{serviceEntity.ServicePort}/api/health",
+                Timeout = TimeSpan.FromSeconds(serviceEntity.TimeOut)
             };
 
             // Register service with consul
@@ -65,5 +85,7 @@ namespace CargoX.Fridge.Web.Host.SvcDiscovery
         public string ServiceName { get; set; }
         public string DiscoveryIP { get; set; }
         public int DiscoveryPort { get; set; }
+        public int TimeOut { get; set; }
+        public int Interval { get; set; }
     }
 }

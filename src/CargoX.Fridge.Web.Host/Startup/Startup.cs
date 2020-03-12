@@ -1,25 +1,24 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
+﻿using Abp.AspNetCore;
+using Abp.AspNetCore.Mvc.Antiforgery;
+using Abp.AspNetCore.SignalR.Hubs;
+using Abp.Castle.Logging.Log4Net;
+using Abp.Dependency;
+using Abp.Extensions;
+using Abp.Json;
+using CargoX.Fridge.Configuration;
+using CargoX.Fridge.Identity;
+using CargoX.Fridge.Web.Host.SvcDiscovery;
+using Castle.Facilities.Logging;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Castle.Facilities.Logging;
-using Abp.AspNetCore;
-using Abp.AspNetCore.Mvc.Antiforgery;
-using Abp.Castle.Logging.Log4Net;
-using Abp.Extensions;
-using CargoX.Fridge.Configuration;
-using CargoX.Fridge.Identity;
-using Abp.AspNetCore.SignalR.Hubs;
-using Abp.Dependency;
-using Abp.Json;
-using CargoX.Fridge.Web.Host.SvcDiscovery;
-using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
+using System;
+using System.Linq;
+using System.Reflection;
 
 namespace CargoX.Fridge.Web.Host.Startup
 {
@@ -74,7 +73,7 @@ namespace CargoX.Fridge.Web.Host.Startup
             );
 
             // Add service discovery
-            //services.AddSvcDiscovery(_appConfiguration, "nacos");
+            services.AddSvcDiscovery(_appConfiguration, "consul");
 
             // Swagger - Enable this line and the related lines in Configure method to enable swagger UI
             services.AddSwaggerGen(options =>
@@ -116,19 +115,9 @@ namespace CargoX.Fridge.Web.Host.Startup
             app.UseAbpRequestLocalization();
 
             // Use service discovery
-            //app.UseSvcDiscovery(_appConfiguration, "nacos");
-            var lifetime = app.ApplicationServices.GetService(typeof(IHostApplicationLifetime));
-            ServiceEntity serviceEntity = new ServiceEntity
-            {
-                ServiceIP = "192.168.1.61",
-                ServicePort = 21021,
-                ServiceName = "CargoX.Fridge",
-                DiscoveryIP = "10.10.1.101",
-                DiscoveryPort = 8500
-            };
-            app.RegisterConsul(lifetime as IHostApplicationLifetime, serviceEntity);
+            app.UseSvcDiscovery(_appConfiguration, "consul");
 
-             app.UseEndpoints(endpoints =>
+            app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHub<AbpCommonHub>("/signalr");
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
